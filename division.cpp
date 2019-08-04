@@ -85,19 +85,16 @@ string showdiff(string s1, string s2)
 	return s3;
 }
 
-
-int main()
+void divide(string s1, string s2)
 {
-    string s1, s2, s3, s4, s;
+    string s3, s4, s;
     string srr[11];
 
     srr[0]="0";
-    getline(cin, s1);
-    getline(cin, s2);
     int big=isbigger(s1,s2);
 
-    if (!big)           cout<<"quotient=1 remainder=0";
-    else if (big==2)    cout<<"quotient=0 remainder="<<s1;
+    if (!big)           cout<<"quotient=1 remainder=0\n";
+    else if (big==2)    cout<<"quotient=0 remainder="<<s1<<"\n";
     else
     {
         s = s1;
@@ -163,8 +160,24 @@ int main()
 
         while (s4[0]=='0')
             s4.erase(s4.begin());
-        cout<<"quotient: "<<s4<<" remainder: "<<s3;
+        cout<<"quotient: "<<s4<<" remainder: "<<s3<<"\n";
     }
+}
 
+int main()
+{
+    int t;
+    cin>>t;
+    string rr;
+    getline(cin, rr);
+    while (t--)
+    {
+        string s1, s2;
+
+        getline(cin, s1);
+        getline(cin, s2);
+
+        divide(s1, s2);
+    }
     return 0;
 }

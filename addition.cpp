@@ -181,12 +181,18 @@ void adder(string s1, string s2)
 
 int main()
 {
-	string s1, s2;
+    int t;
+    cin>>t;
+    string rr; getline(cin, rr);
 
-	getline(cin, s1);
-	getline(cin, s2);
-
-	adder(s1, s2);
+    while(t--)
+    {
+        string s1, s2;
+        getline(cin, s1);
+        getline(cin, s2);
+        adder(s1, s2);
+        cout<<"\n\n";
+    }
 
 	return 0;
 }
