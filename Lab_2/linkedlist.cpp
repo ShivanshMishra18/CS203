@@ -28,15 +28,19 @@ void AddFirst(int x, int y)
 	}
 }
 
-int DelFirst()
+void DelFirst()
 {
-	if (head==NULL)	return -1;
-	
+	if (head==NULL)	
+	{
+		cout<<"-1\n";
+		return;
+	}
+
 	if (head->next == NULL)
 	{
 		delete(head);
 		head = NULL;
-		return 0;
+		return;
 	}
 
 	node* temp = head;
@@ -44,14 +48,21 @@ int DelFirst()
 	temp->next = NULL;
 	delete(temp);
 	temp = NULL;
-	return 0;
+	return;
 }
 
-int Del(int x, int y)
+void Del(int x, int y)
 {
-	if (head==NULL)	return -1;
+	if (head==NULL)
+	{
+		cout<<"-1\n";
+		return;
+	}
 	if ((head->x==x) && (head->y==y))
-		return DelFirst();
+	{
+		DelFirst();
+		return;
+	}
 
 	node* temp = head;
 
@@ -67,12 +78,13 @@ int Del(int x, int y)
 			t->next = NULL;
 			delete(t);
 			t = NULL;
-			return 0;
+			return;
 		}
 		temp = temp->next;
 	}
 
-	return -1;	
+	cout<<"-1\n";
+	return;	
 }
 
 float Euclidian(node* nn)
@@ -87,13 +99,18 @@ void Search(float d)
 	if (head==NULL)	return;
 
 	node* ptr=head;
-	
+	int cnt=0;
+
 	while(ptr!=NULL)
 	{
 		if (Euclidian(ptr) <= d)
-			cout<<"("<<ptr->x<<","<<ptr->y<<")";
+			cnt++;
 		ptr = ptr->next;
 	}
+	if (!cnt)	cout<<"-1\n";
+	else 		cout<<cnt<<"\n";
+
+	return;
 }
 
 bool Search(int x, int y)
@@ -144,18 +161,17 @@ int main()
 		}
 		else if (c==2)
 		{
-			cout<<DelFirst()<<"\n";
+			DelFirst();
 		}
 		else if (c==3)
 		{
 			cin>>x>>y;
-			cout<<Del(x,y)<<"\n";
+			Del(x,y);
 		}
 		else if (c==4)
 		{
 			cin>>x;
 			Search(x);
-			cout<<"\n";
 		}
 		else if (c==5)
 		{
@@ -175,6 +191,10 @@ int main()
 			t++;
 		}
 	}
+
+	// Empty the list to prevent memory leaks
+	while (Length())
+		DelFirst();
 
 	return 0;
 }
