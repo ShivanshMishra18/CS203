@@ -202,7 +202,13 @@ vector <string> input()
 int main()
 {
 
+	int cases;
 	int queries;
+
+	scanf("%d\n", &cases);
+	
+	while (cases--){
+
 	scanf("%d\n", &queries);
 
 	while (queries--){
@@ -280,6 +286,7 @@ int main()
 	cout<<eval_tree(root);
 	destroy(root);
 	cout<<"\n";
+	}
 	}
 
 	return 0;
