@@ -17,20 +17,36 @@ void initptr(node * p)
 	p->right = NULL;
 }
 
-// String to Integer
-int string_to_int(string s)
+// String to Integer (long long int)
+long long int string_to_int(string s)
 {
-	int k=0;
-	while(s.length())
+	long long int k=0;
+	
+	if (s[0]!='-')
 	{
-		k = k*10 + (s[0]-'0');
-		s.erase(s.begin());
+    	while(s.length())
+    	{
+    		k = k*10 + (s[0]-'0');
+    		s.erase(s.begin());
+    	}
 	}
+	
+	else
+	{
+	    s.erase(s.begin());
+    	while(s.length())
+    	{
+    		k = k*10 + (s[0]-'0');
+    		s.erase(s.begin());
+    	}
+    	k = k*(-1);
+	}
+	
 	return k;
 }
 
 // Evaluate from expression tree
-int eval_tree(node *root)
+long long int eval_tree(node *root)
 {
 	node * ptr = root;
 	if (ptr==NULL)
@@ -40,8 +56,8 @@ int eval_tree(node *root)
 		return string_to_int(ptr->data);
 
 	char ch = ptr->data[0];
-	int left_op = eval_tree(ptr->left); 		//string_to_int(ptr->left->data);
-	int right_op = eval_tree(ptr->right); 		//string_to_int(ptr->right->data);
+	long long int left_op = eval_tree(ptr->left); 		//string_to_int(ptr->left->data);
+	long long int right_op = eval_tree(ptr->right); 		//string_to_int(ptr->right->data);
 
 	if (ch == '+')
 		return left_op + right_op;
@@ -106,18 +122,54 @@ vector <string> input()
 	v.push_back(kk);
 	s.erase(s.begin());
 
-	// Tokenize input
+
+	// ------------------ TOKENIZE INPUT ---------------------
+
 	while (s.length())
 	{
 		if ((s[0]-'0')>=0 && (s[0]-'0')<=9)
 		{
-			if ((v.back()[0]-'0'<=9) && (v.back()[0]-'0'>=0))
+			if ((v.back().back()-'0'<=9) && (v.back().back()-'0'>=0))
 				{
 					string tt= v.back();
 					// cout<<v.back();
 					v.back().clear();
-					v.back() = to_string(((string_to_int(tt))*10) + (int)(s[0]-'0'));
+					
+					if (tt[0]!='-')
+					    v.back() = to_string(((string_to_int(tt))*10) + (int)(s[0]-'0'));
+					else
+					{
+					    string ss = "";
+					    string vv;
+					    ss.append(tt,0,1);
+					    tt.erase(tt.begin());
+					    vv = to_string(((string_to_int(tt))*10) + (int)(s[0]-'0'));
+					    ss.append(vv,0,vv.length());
+					    v.back() = ss;
+					}
 				}
+				
+			else if (v.back().back()=='-')
+			{
+			    //cout<<"y";
+			    string temp = v.back();
+			    v.pop_back();
+			    
+			    // Check if second last is not a number or start of string or closing bracket and proceed
+			    if (!v.size() || ( (!((v.back().back()-'0'<=9)&&(v.back().back()-'0'>=0))) && (!(v.back().back()==')')) ) )
+			    {
+			        temp.append(s,0,1);
+			        v.push_back(temp);
+			    }
+			    
+			    else
+			    {
+			        v.push_back(temp);
+			        v.push_back(to_string(s[0]-'0'));
+			    }
+			 //   cout<<"  "<<temp<<"\n";
+			}
+			
 			else
 			{
 				v.push_back(to_string(s[0]-'0'));
@@ -134,13 +186,14 @@ vector <string> input()
 		s.erase(s.begin());
 	}
 
-	// for (int i=0; i<v.size(); i++)
-	// {
-	// 	cout<<v[i]<<" ";
-	// }
+// 	for (int i=0; i<v.size(); i++)
+// 	{
+// 		cout<<v[i]<<" ";
+// 	}
 	
 
-	//Infix to Postfix
+	// ------------  INFIX TO POSTFIX CONVERSION --------------
+
 	stack <string> st;
 	vector<string> vout;
 	string rr="_N_";
@@ -150,7 +203,7 @@ vector <string> input()
 
 	for (int i=0; i<l; i++)
 	{
-		if ((v[i][0]-'0'<=9) && (v[i][0]-'0'>=0))
+		if ((v[i].back()-'0'<=9) && (v[i].back()-'0'>=0))
 			vout.push_back(v[i]);
 
 		else if (v[i]=="(")
@@ -173,7 +226,7 @@ vector <string> input()
 
     	else
     	{ 
-    		if (((v[i][0]-'a'>=0) && (v[i][0]-'a'<=25)) || ((v[i][0]-'A'>=0) && (v[i][0]-'A'<=25)))
+    		if (((v[i].back()-'a'>=0) && (v[i].back()-'a'<=25)) || ((v[i].back()-'A'>=0) && (v[i].back()-'A'<=25)))
     		{
     			cout<<"CANT BE EVALUATED\n";
     			vector <string> ww;
@@ -202,12 +255,7 @@ vector <string> input()
 int main()
 {
 
-	int cases;
 	int queries;
-
-	scanf("%d\n", &cases);
-	
-	while (cases--){
 
 	scanf("%d\n", &queries);
 
@@ -215,8 +263,10 @@ int main()
 
 	vector<string> q(input());
 
+    // cout<<"\n";
     // for (int j=0; j<q.size(); j++)
     // 		cout<<q[j]<<" "; 
+    
     if (!q.size())	continue;
 
 	root = new(node);
@@ -228,7 +278,9 @@ int main()
 
 	node *ptr = root;
 
-	// Generate Evaluation Tree from Postfix Vector
+
+	// ------- GENERATE EVALUATION TREE FROM POSTFIX VECTOR --------------
+
 	while (q.size())
 	{
 		string nxt=q.back();
@@ -236,25 +288,36 @@ int main()
 
 		if (isoper(nxt))
 		{
-			if (ptr->right == NULL) 
-			{
-				ptr->right = new(node);
-				ptr->right->parent = ptr;
-				ptr = ptr->right;
-				initptr(ptr);
-				ptr->data = nxt;
-			}
-			else
-			{
-				ptr->left = new(node);
-				ptr->left->parent = ptr;
-				ptr = ptr->left;
-				initptr(ptr);
-				ptr->data = nxt;
-			}
+		    while (1)
+		    {
+		      //  cout<<"oper\n";
+    			if (ptr->right == NULL) 
+    			{
+    				ptr->right = new(node);
+    				ptr->right->parent = ptr;
+    				ptr = ptr->right;
+    				initptr(ptr);
+    				ptr->data = nxt;
+    				break;
+    			}
+    			else if (ptr->left == NULL)
+    			{
+    				ptr->left = new(node);
+    				ptr->left->parent = ptr;
+    				ptr = ptr->left;
+    				initptr(ptr);
+    				ptr->data = nxt;
+    				break;
+    			}
+    			else
+    			{
+    			    ptr = ptr->parent;
+    			}
+		    }
 		}
 		else
 		{
+		  //  cout<<"notoper\n";
 			while(1)
 			{
 				if (ptr->right == NULL) 
@@ -283,10 +346,13 @@ int main()
 		}
 	}
 
+    // Evaluate generated tree
 	cout<<eval_tree(root);
+
+    // Delete nodes to avoid memory leaks
 	destroy(root);
-	cout<<"\n";
-	}
+	
+    cout<<"\n";
 	}
 
 	return 0;
