@@ -24,22 +24,22 @@ long long int string_to_int(string s)
 	
 	if (s[0]!='-')
 	{
-    	while(s.length())
-    	{
-    		k = k*10 + (s[0]-'0');
-    		s.erase(s.begin());
-    	}
+		while(s.length())
+		{
+			k = k*10 + (s[0]-'0');
+			s.erase(s.begin());
+		}
 	}
 	
 	else
 	{
-	    s.erase(s.begin());
-    	while(s.length())
-    	{
-    		k = k*10 + (s[0]-'0');
-    		s.erase(s.begin());
-    	}
-    	k = k*(-1);
+	    	s.erase(s.begin());
+		while(s.length())
+		{
+			k = k*10 + (s[0]-'0');
+			s.erase(s.begin());
+		}
+		k = k*(-1);
 	}
 	
 	return k;
@@ -116,6 +116,12 @@ vector <string> input()
 	
 	string s;
 	getline(cin, s);
+	
+	// Handle minus at first position
+	if (s[0]=='-')
+	{
+	    s.insert(0,"0");   
+	}
 
 	string kk="";
 	kk.append(s,0,1);
@@ -212,62 +218,66 @@ vector <string> input()
 		else if (v[i]==")")
 		{
 			while(st.top() != "_N_" && st.top() != "(") 
-            { 
-                string c = st.top(); 
-                st.pop(); 
-               	vout.push_back(c);
-            } 
-            if(st.top() == "(") 
-            { 
-                string c = st.top(); 
-                st.pop(); 
-            } 
+			    { 
+				string c = st.top(); 
+				st.pop(); 
+				vout.push_back(c);
+			    }
+			
+		    	if(st.top() == "(") 
+		    	{ 
+				string c = st.top(); 
+				st.pop(); 
+		    	} 
 		}
 
-    	else
-    	{ 
-    		if (((v[i].back()-'a'>=0) && (v[i].back()-'a'<=25)) || ((v[i].back()-'A'>=0) && (v[i].back()-'A'<=25)))
-    		{
-    			cout<<"CANT BE EVALUATED\n";
-    			vector <string> ww;
-    			return ww;
-    		} 	
-            while(st.top() != "_N_" && prior(v[i]) <= prior(st.top())) 
-            { 
-                string c = st.top(); 
-                st.pop(); 
-                vout.push_back(c);
-            } 
-            st.push(v[i]); 
-        } 
+		else
+		{ 
+			if (((v[i].back()-'a'>=0) && (v[i].back()-'a'<=25)) || ((v[i].back()-'A'>=0) && (v[i].back()-'A'<=25)))
+			{
+				cout<<"CANT BE EVALUATED\n";
+				vector <string> ww;
+				return ww;
+			} 
+
+			while(st.top() != "_N_" && prior(v[i]) <= prior(st.top())) 
+			{ 
+			string c = st.top(); 
+			st.pop(); 
+			vout.push_back(c);
+			}
+
+			st.push(v[i]); 
+		}
 	}
 
 	while(st.top() != "_N_") 
-    { 
-        string c = st.top(); 
-        st.pop(); 
-        vout.push_back(c); 
-    } 
-
-    return vout;
+   	 { 
+		string c = st.top(); 
+		st.pop(); 
+		vout.push_back(c); 
+    	} 
+	
+	return vout;
 }
 
 int main()
 {
 
-	int queries;
+int queries;
 
-	scanf("%d\n", &queries);
+scanf("%d\n", &queries);
 
-	while (queries--){
-
+while (queries--)
+{
+	
 	vector<string> q(input());
 
-    // cout<<"\n";
-    // for (int j=0; j<q.size(); j++)
-    // 		cout<<q[j]<<" "; 
-    
-    if (!q.size())	continue;
+	// cout<<"\n";
+	// for (int j=0; j<q.size(); j++)
+	// 		cout<<q[j]<<" "; 
+
+    	if (!q.size())	continue;
 
 	root = new(node);
 	initptr(root);
@@ -352,8 +362,10 @@ int main()
     // Delete nodes to avoid memory leaks
 	destroy(root);
 	
-    cout<<"\n";
-	}
+  	cout<<"\n";
 
-	return 0;
+}
+
+return 0;
+
 }
