@@ -11,7 +11,7 @@ int main()
 
 	cin>>users>>queries;
 
-	long long int A[users]={0};
+	long long int A[users+10]={0};
 
 	while (queries--)
 	{
