@@ -1,0 +1,57 @@
+In this week and next you are to write a program to evaluate expressions by constructing expression trees. We will consider the following as expressions
+1. Any number is an expression and its value is the numeric value of the number.
+2. Any variable is an expression and its value is defined only if the variable was initialized to some value. In that case the value of the variable is equal to the value it currently holds. A variable a finite sequence consisting  of uppercase and lower case letters.
+
+3. If E1 and E2 are expressions the so are the following
+   a) E1+E2
+   b) E1*E2
+   c) E1-E2
+   d) E1/E2
+   e)  -E1
+   f) (E1)
+   g) E1^E2
+   
+The value of these expressions are according  to the usual laws arithmetic 
+4. THe usual associativity and precedence rules apply.
+
+Write a C++ program to evaluate expressions of the above kind.
+
+Input Output Specification
+
+Input
+1. The first line of the input contains a number n indicating the number of test cases.
+2. The first line of every test case indicates the number of lines in each test case.
+3. Every subsequent  line of a test case is either an assignment  statement  an expression
+4. An assignment statement is of the form "variable=expression".
+
+Output
+1)For every assignment statement update the value of the variable. (Note that fresh variables are to be used in each test case)
+2)For every expression print the value of the expression.
+3) Print a "CANT BE EVALUATED" if an expression cannot be evaluated to obtain a numerical value.
+
+Example
+Input
+
+2
+5
+x=1
+y=x+x*x
+x=y
+x
+y+x
+3
+9
+99+9
+99-9
+x
+
+Output
+2
+4
+9
+108
+90
+CANT BE EVALUATED
+
+
+For this week, write a C++ program where you may assume that there will not be any assignment statements.
