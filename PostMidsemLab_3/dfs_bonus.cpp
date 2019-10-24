@@ -7,6 +7,7 @@ using namespace std;
 int n,m,c;
 int ans = 0;
 int fin_ans = -1;
+int clr;
 
 void dfs(int x, int y, vector <vector <bool>> &visited, vector <vector <int>> &graph, int color) {
 	visited[x][y] = 1;
@@ -40,6 +41,7 @@ void dfs(int x, int y, vector <vector <bool>> &visited, vector <vector <int>> &g
 		}
 	}
 	if (ans > fin_ans) {
+		clr = color;
 		fin_ans = ans;
 	}
 
@@ -78,7 +80,7 @@ int main()
 			}
 		}
 	}
-	cout << fin_ans << "\n";
+	cout << fin_ans << " " << clr << "\n";
 
 	return 0;
 }
